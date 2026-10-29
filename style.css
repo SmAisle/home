@@ -55,3 +55,8 @@ details.faq[open] summary::after{content:"\2212"}
 details.faq[open]{padding-bottom:8px}
 details.faq h3{margin-top:10px}
 .gicon{display:block;width:64px;height:64px;border-radius:15px;margin:0 0 12px}
+.wide .wrap{max-width:1160px;padding:0 32px}
+.wide .games{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.wide .lead{max-width:760px}
+.wide #unlock{max-width:440px}
+@media (min-width:1000px){.wide main{padding-top:56px}.wide h1{font-size:52px}}
