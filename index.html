@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>smAisle</title>
-<meta name="description" content="Small, friendly games by smAisle: Straight Down, Connello and Bullseye Roulette.">
+<meta name="description" content="Small, friendly games by smAisle: Straight Down, Connello, Bullseye Roulette and Shuffle Blast.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap">
 <link rel="stylesheet" href="style.css">
@@ -33,33 +33,46 @@
       <p>Darts on a spinning roulette wheel. Bet red or black, roll the ball, then hit the number it lands on. Count down from 301 to exactly zero in as few darts as you can. Solo, vs Computer or 2 players.</p>
       <a class="btn" href="https://smaisle.github.io/BullseyeRoulette/">Play in your browser</a>
     </section>
+    <section class="game">
+      <h2>Shuffle Blast <span class="beta">Beta</span></h2>
+      <p>A block puzzle with bombs, rubble and a shuffle. Drag pieces onto a 9×9 board and fill rows, columns or 3×3 squares to clear them. Still being tuned, so tell us what you think. Invite only for now.</p>
+      <form class="unlock" autocomplete="off">
+        <input type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
+        <button class="btn" type="submit">Unlock</button>
+      </form>
+      <p class="meta bad" hidden>That code didn't work. Check it and try again.</p>
+      <a class="btn play" href="https://smaisle.github.io/ShuffleBlast/" hidden>Play in your browser</a>
+    </section>
     <section class="game" id="d15">
       <h2>The Daily 15</h2>
       <p>A daily crossword-style word puzzle. Everyone gets the same starting word and the same 15 words. Fit them all on the board. Invite only for now.</p>
-      <form class="unlock" id="d15form" autocomplete="off">
-        <input id="d15code" type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
+      <form class="unlock" autocomplete="off">
+        <input type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
         <button class="btn" type="submit">Unlock</button>
       </form>
-      <p class="meta" id="d15msg" hidden>That code didn't work. Check it and try again.</p>
-      <a class="btn" id="d15play" href="https://smaisle.github.io/DailyGrid/today.html" hidden>Play today's puzzle</a>
+      <p class="meta bad" hidden>That code didn't work. Check it and try again.</p>
+      <a class="btn play" href="https://smaisle.github.io/DailyGrid/today.html" hidden>Play today's puzzle</a>
     </section>
   </div>
   <section class="note" id="contact"><strong>Say hi.</strong> Questions, ideas or a bug to report? Email <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a> and we'll get back to you.</section>
 </div></main>
 <footer><div class="wrap">
-  © 2026 smAisle · v1.2 · Oct 29 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
+  © 2026 smAisle · v1.3 · Oct 29 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
 </div></footer>
 <script>
 (function(){
+  // One invite code unlocks every locked card, remembered on this device.
   var CODES=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked';
-  var form=document.getElementById('d15form'), play=document.getElementById('d15play'), msg=document.getElementById('d15msg');
-  function open(){ form.hidden=true; msg.hidden=true; play.hidden=false; }
+  var forms=[].slice.call(document.querySelectorAll('form.unlock'));
+  function open(){ forms.forEach(function(f){ var c=f.parentNode; f.hidden=true; c.querySelector('.bad').hidden=true; c.querySelector('.play').hidden=false; }); }
   try{ if(localStorage.getItem(KEY)==='1') open(); }catch(e){}
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var v=document.getElementById('d15code').value.replace(/\s+/g,'').toUpperCase();
-    if(CODES.indexOf(v)>=0){ try{ localStorage.setItem(KEY,'1'); }catch(e){} open(); }
-    else msg.hidden=false;
+  forms.forEach(function(f){
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var v=f.querySelector('input').value.replace(/\s+/g,'').toUpperCase();
+      if(CODES.indexOf(v)>=0){ try{ localStorage.setItem(KEY,'1'); }catch(e){} open(); }
+      else f.parentNode.querySelector('.bad').hidden=false;
+    });
   });
 })();
 </script>
