@@ -43,3 +43,7 @@ footer a{color:var(--muted)}
 .unlock .btn{border:0;cursor:pointer;font:inherit;font-weight:800}
 [hidden]{display:none!important}
 .beta{display:inline-block;vertical-align:middle;margin-left:6px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--cyan));color:#0A0F2C}
+h2.section{font-size:26px;margin:40px 0 12px}
+h2.section:first-of-type{margin-top:8px}
+#unlock{max-width:420px;margin:12px 0}
+#private{margin-top:16px}

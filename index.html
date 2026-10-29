@@ -17,6 +17,7 @@
 <main><div class="wrap">
   <h1>Small games, big smiles.</h1>
   <p class="lead">smAisle (say it like "smile") makes quick, friendly games you can pick up in a minute and play with the people next to you.</p>
+  <h2 class="section">Games</h2>
   <div class="games">
     <section class="game">
       <h2>Straight Down</h2>
@@ -33,46 +34,44 @@
       <p>Darts on a spinning roulette wheel. Bet red or black, roll the ball, then hit the number it lands on. Count down from 301 to exactly zero in as few darts as you can. Solo, vs Computer or 2 players.</p>
       <a class="btn" href="https://smaisle.github.io/BullseyeRoulette/">Play in your browser</a>
     </section>
+  </div>
+
+  <h2 class="section">Friends &amp; family</h2>
+  <p class="meta">New games we're still testing. Enter the invite code to see them.</p>
+  <form class="unlock" id="unlock" autocomplete="off">
+    <input type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
+    <button class="btn" type="submit">Unlock</button>
+  </form>
+  <p class="meta" id="bad" hidden>That code didn't work. Check it and try again.</p>
+  <div class="games" id="private" hidden>
+    <section class="game">
+      <h2>The Daily 15</h2>
+      <p>A daily crossword-style word puzzle. Everyone gets the same starting word and the same 15 words. Fit them all on the board.</p>
+      <a class="btn" href="https://smaisle.github.io/DailyGrid/today.html">Play today's puzzle</a>
+    </section>
     <section class="game">
       <h2>Shuffle Blast <span class="beta">Beta</span></h2>
-      <p>A block puzzle with bombs, rubble and a shuffle. Drag pieces onto a 9×9 board and fill rows, columns or 3×3 squares to clear them. Still being tuned, so tell us what you think. Invite only for now.</p>
-      <form class="unlock" autocomplete="off">
-        <input type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
-        <button class="btn" type="submit">Unlock</button>
-      </form>
-      <p class="meta bad" hidden>That code didn't work. Check it and try again.</p>
-      <a class="btn play" href="https://smaisle.github.io/ShuffleBlast/" hidden>Play in your browser</a>
-    </section>
-    <section class="game" id="d15">
-      <h2>The Daily 15</h2>
-      <p>A daily crossword-style word puzzle. Everyone gets the same starting word and the same 15 words. Fit them all on the board. Invite only for now.</p>
-      <form class="unlock" autocomplete="off">
-        <input type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
-        <button class="btn" type="submit">Unlock</button>
-      </form>
-      <p class="meta bad" hidden>That code didn't work. Check it and try again.</p>
-      <a class="btn play" href="https://smaisle.github.io/DailyGrid/today.html" hidden>Play today's puzzle</a>
+      <p>A block puzzle with bombs, rubble and a shuffle. Drag pieces onto a 9×9 board and fill rows, columns or 3×3 squares to clear them. Still being tuned, so tell us what you think.</p>
+      <a class="btn" href="https://smaisle.github.io/ShuffleBlast/">Play in your browser</a>
     </section>
   </div>
   <section class="note" id="contact"><strong>Say hi.</strong> Questions, ideas or a bug to report? Email <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a> and we'll get back to you.</section>
 </div></main>
 <footer><div class="wrap">
-  © 2026 smAisle · v1.3 · Oct 29 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
+  © 2026 smAisle · v1.4 · Oct 29 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
 </div></footer>
 <script>
 (function(){
-  // One invite code unlocks every locked card, remembered on this device.
+  // The invite code reveals the Friends & family games, remembered on this device.
   var CODES=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked';
-  var forms=[].slice.call(document.querySelectorAll('form.unlock'));
-  function open(){ forms.forEach(function(f){ var c=f.parentNode; f.hidden=true; c.querySelector('.bad').hidden=true; c.querySelector('.play').hidden=false; }); }
+  var form=document.getElementById('unlock'), bad=document.getElementById('bad'), priv=document.getElementById('private');
+  function open(){ form.hidden=true; bad.hidden=true; priv.hidden=false; }
   try{ if(localStorage.getItem(KEY)==='1') open(); }catch(e){}
-  forms.forEach(function(f){
-    f.addEventListener('submit',function(e){
-      e.preventDefault();
-      var v=f.querySelector('input').value.replace(/\s+/g,'').toUpperCase();
-      if(CODES.indexOf(v)>=0){ try{ localStorage.setItem(KEY,'1'); }catch(e){} open(); }
-      else f.parentNode.querySelector('.bad').hidden=false;
-    });
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var v=form.querySelector('input').value.replace(/\s+/g,'').toUpperCase();
+    if(CODES.indexOf(v)>=0){ try{ localStorage.setItem(KEY,'1'); }catch(e){} open(); }
+    else bad.hidden=false;
   });
 })();
 </script>
