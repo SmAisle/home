@@ -37,7 +37,7 @@
       <h2>The Daily 15</h2>
       <p>A daily crossword-style word puzzle. Everyone gets the same starting word and the same 15 words. Fit them all on the board. Invite only for now.</p>
       <form class="unlock" id="d15form" autocomplete="off">
-        <input id="d15code" type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="characters" spellcheck="false">
+        <input id="d15code" type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
         <button class="btn" type="submit">Unlock</button>
       </form>
       <p class="meta" id="d15msg" hidden>That code didn't work. Check it and try again.</p>
@@ -51,14 +51,14 @@
 </div></footer>
 <script>
 (function(){
-  var CODE='AISLE15', KEY='d15_unlocked';
+  var CODES=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked';
   var form=document.getElementById('d15form'), play=document.getElementById('d15play'), msg=document.getElementById('d15msg');
   function open(){ form.hidden=true; msg.hidden=true; play.hidden=false; }
   try{ if(localStorage.getItem(KEY)==='1') open(); }catch(e){}
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var v=document.getElementById('d15code').value.replace(/\s+/g,'').toUpperCase();
-    if(v===CODE){ try{ localStorage.setItem(KEY,'1'); }catch(e){} open(); }
+    if(CODES.indexOf(v)>=0){ try{ localStorage.setItem(KEY,'1'); }catch(e){} open(); }
     else msg.hidden=false;
   });
 })();
