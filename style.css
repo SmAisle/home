@@ -54,3 +54,4 @@ details.faq summary::after{content:"+";font-size:24px;line-height:1;color:var(--
 details.faq[open] summary::after{content:"\2212"}
 details.faq[open]{padding-bottom:8px}
 details.faq h3{margin-top:10px}
+.gicon{display:block;width:64px;height:64px;border-radius:15px;margin:0 0 12px}
