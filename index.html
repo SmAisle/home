@@ -36,7 +36,7 @@
     </section>
   </div>
 
-  <h2 class="section">Friends &amp; family</h2>
+  <h2 class="section">Invite only</h2>
   <p class="meta">New games we're still testing. Enter the invite code to see them.</p>
   <form class="unlock" id="unlock" autocomplete="off">
     <input type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
@@ -58,11 +58,11 @@
   <section class="note" id="contact"><strong>Say hi.</strong> Questions, ideas or a bug to report? Email <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a> and we'll get back to you.</section>
 </div></main>
 <footer><div class="wrap">
-  © 2026 smAisle · v1.4 · Oct 29 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
+  © 2026 smAisle · v1.5 · Oct 29 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
 </div></footer>
 <script>
 (function(){
-  // The invite code reveals the Friends & family games, remembered on this device.
+  // The invite code reveals the invite-only games, remembered on this device.
   var CODES=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked';
   var form=document.getElementById('unlock'), bad=document.getElementById('bad'), priv=document.getElementById('private');
   function open(){ form.hidden=true; bad.hidden=true; priv.hidden=false; }
