@@ -47,3 +47,10 @@ h2.section{font-size:26px;margin:40px 0 12px}
 h2.section:first-of-type{margin-top:8px}
 #unlock{max-width:420px;margin:12px 0}
 #private{margin-top:16px}
+details.faq{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 0;padding:0 18px}
+details.faq summary{cursor:pointer;list-style:none;font-weight:800;font-size:19px;padding:14px 0;display:flex;justify-content:space-between;align-items:center}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"+";font-size:24px;line-height:1;color:var(--muted)}
+details.faq[open] summary::after{content:"\2212"}
+details.faq[open]{padding-bottom:8px}
+details.faq h3{margin-top:10px}
