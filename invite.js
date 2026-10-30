@@ -5,7 +5,7 @@ var Invite=(function(){
   var FAMILY=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked', GKEY='smaisle_games';
   var DOC='https://firestore.googleapis.com/v1/projects/aislerun-88e79/databases/(default)/documents/invite_codes/';
   var API='AIzaSyAlbSCTpAiK-1tojkyWrY3QuJsSzILHSfs';
-  var URLS={daily15:'https://smaisle.github.io/DailyGrid/today.html',shuffleblast:'https://smaisle.github.io/ShuffleBlast/',abcdeal:'https://smaisle.github.io/abcdeal/'};
+  var URLS={daily15:'https://smaisle.github.io/DailyGrid/today.html',shuffleblast:'https://smaisle.github.io/ShuffleBlast/',abcdeal:'https://smaisle.github.io/abcdeal/',gramble:'https://smaisle.github.io/gramble/'};
   function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
   var last='';
