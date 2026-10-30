@@ -64,3 +64,4 @@ details.faq h3{margin-top:10px}
 .lost{text-align:center;padding:40px 0}
 .lost .big{font-size:72px;font-weight:900;line-height:1;margin:0;background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
 .about{max-width:760px;font-size:18px;color:var(--muted)}
+.ai{font-weight:900;background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
