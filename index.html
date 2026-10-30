@@ -64,7 +64,7 @@
   <section class="note" id="contact"><strong>Say hi.</strong> Questions, ideas or a bug to report? Email <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a> and we'll get back to you.</section>
 </div></main>
 <footer><div class="wrap">
-  © 2026 smAisle · v1.29 · Oct 30 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
+  © 2026 smAisle · v1.30 · Oct 30 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
 </div></footer>
 <script src="invite.js"></script>
 <script>
@@ -77,7 +77,7 @@
   form.addEventListener('submit',function(e){
     e.preventDefault(); bad.hidden=true;
     Invite.check(form.querySelector('input').value).then(function(r){
-      if(r==='family') location.href='invite.html';
+      if(r==='family'||r==='all') location.href='invite.html';
       else if(r) Invite.go(r);
       else bad.hidden=false;
     });

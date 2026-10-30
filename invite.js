@@ -1,8 +1,8 @@
 // Invite-only games on smaisle.app. Family&Friends opens invite.html; each game has its own codes,
-// kept in Firestore (invite_codes/{CODE} -> {game}) and made on the stats page.
+// kept in Firestore (invite_codes/{CODE} -> {game}) and made on the stats page. A code with game 'all' opens every game.
 // This only hides links: anyone with a game's URL can still play it.
 var Invite=(function(){
-  var FAMILY=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked', GKEY='smaisle_games';
+  var FAMILY=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked', GKEY='smaisle_games', CKEY='smaisle_codes';
   var DOC='https://firestore.googleapis.com/v1/projects/aislerun-88e79/databases/(default)/documents/invite_codes/';
   var API='AIzaSyAlbSCTpAiK-1tojkyWrY3QuJsSzILHSfs';
   var URLS={daily15:'https://smaisle.github.io/DailyGrid/today.html',shuffleblast:'https://smaisle.github.io/ShuffleBlast/',abcdeal:'https://smaisle.github.io/abcdeal/',gramble:'https://smaisle.github.io/gramble/'};
@@ -10,26 +10,33 @@ var Invite=(function(){
   function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
   var last='';
   function owned(){ try{ return JSON.parse(get(GKEY)||'[]'); }catch(e){ return []; } }
+  function codes(){ try{ return JSON.parse(get(CKEY)||'{}'); }catch(e){ return {}; } }
+  function own(g,code){
+    var list=owned(); if(list.indexOf(g)<0){ list.push(g); set(GKEY,JSON.stringify(list)); }
+    var c=codes(); c[g]=code; set(CKEY,JSON.stringify(c));
+  }
+  // Each game's own code screen opens straight away when its code rides along.
+  function url(g){ var c=codes()[g]; return URLS[g]+(c?'?code='+encodeURIComponent(c):''); }
   return {
     owned:owned,
     family:function(){ return get(KEY)==='1'; },
-    // Resolves to 'family', a game key, or null.
+    // Resolves to 'family', 'all' (every game now unlocked), a game key, or null.
     check:function(raw){
       var code=String(raw||'').replace(/\s+/g,'').toUpperCase(); last=code;
       if(FAMILY.indexOf(code)>=0){ set(KEY,'1'); return Promise.resolve('family'); }
       if(!/^[A-Z0-9]{3,20}$/.test(code)) return Promise.resolve(null);
       return fetch(DOC+code+'?key='+API).then(function(r){ return r.ok?r.json():null; })
-        .then(function(d){ var g=d&&d.fields&&d.fields.game?d.fields.game.stringValue:null; return URLS[g]?g:null; })
+        .then(function(d){
+          var g=d&&d.fields&&d.fields.game?d.fields.game.stringValue:null;
+          if(g==='all'){ set(KEY,'1'); for(var k in URLS) own(k,code); return 'all'; }
+          return URLS[g]?g:null;
+        })
         .catch(function(){ return null; });
     },
-    // Remembers the game on this device and opens it. The Daily 15 has its own code screen,
-    // so the code just checked rides along and unlocks it there too.
-    go:function(g){
-      var list=owned(); if(list.indexOf(g)<0){ list.push(g); set(GKEY,JSON.stringify(list)); }
-      location.href=URLS[g]+(g==='daily15'&&last?'?code='+encodeURIComponent(last):'');
-    },
+    // Remembers the game (and the code just checked) on this device and opens it.
+    go:function(g){ own(g,last); location.href=url(g); },
     show:function(card){
-      var a=card.querySelector('.play'); a.href=a.getAttribute('data-href'); a.hidden=false;
+      var a=card.querySelector('.play'); a.href=url(card.getAttribute('data-game')); a.hidden=false;
       card.querySelector('.gunlock').hidden=true; card.querySelector('.gbad').hidden=true;
     }
   };
