@@ -8,23 +8,25 @@ var Invite=(function(){
   var URLS={daily15:'https://smaisle.github.io/DailyGrid/today.html',shuffleblast:'https://smaisle.github.io/ShuffleBlast/',abcdeal:'https://smaisle.github.io/abcdeal/'};
   function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  var last='';
   function owned(){ try{ return JSON.parse(get(GKEY)||'[]'); }catch(e){ return []; } }
   return {
     owned:owned,
     family:function(){ return get(KEY)==='1'; },
     // Resolves to 'family', a game key, or null.
     check:function(raw){
-      var code=String(raw||'').replace(/\s+/g,'').toUpperCase();
+      var code=String(raw||'').replace(/\s+/g,'').toUpperCase(); last=code;
       if(FAMILY.indexOf(code)>=0){ set(KEY,'1'); return Promise.resolve('family'); }
       if(!/^[A-Z0-9]{3,20}$/.test(code)) return Promise.resolve(null);
       return fetch(DOC+code+'?key='+API).then(function(r){ return r.ok?r.json():null; })
         .then(function(d){ var g=d&&d.fields&&d.fields.game?d.fields.game.stringValue:null; return URLS[g]?g:null; })
         .catch(function(){ return null; });
     },
-    // Remembers the game on this device and opens it.
+    // Remembers the game on this device and opens it. The Daily 15 has its own code screen,
+    // so the code just checked rides along and unlocks it there too.
     go:function(g){
       var list=owned(); if(list.indexOf(g)<0){ list.push(g); set(GKEY,JSON.stringify(list)); }
-      location.href=URLS[g];
+      location.href=URLS[g]+(g==='daily15'&&last?'?code='+encodeURIComponent(last):'');
     },
     show:function(card){
       var a=card.querySelector('.play'); a.href=a.getAttribute('data-href'); a.hidden=false;
