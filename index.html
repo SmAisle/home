@@ -54,53 +54,93 @@
   </div>
 
   <h2 class="section">Invite only</h2>
-  <p class="meta">New games we're still testing. Enter the invite code to see them.</p>
+  <p class="meta">New games we're still testing. Enter the invite code to see them, then each game's own code to play it.</p>
   <form class="unlock" id="unlock" autocomplete="off">
     <input type="text" placeholder="Invite code" aria-label="Invite code" autocapitalize="off" spellcheck="false">
     <button class="btn" type="submit">Unlock</button>
   </form>
   <p class="meta" id="bad" hidden>That code didn't work. Check it and try again.</p>
   <div class="games" id="private" hidden>
-    <section class="game">
+    <section class="game" data-game="daily15">
       <img class="gicon" src="icons/daily-15.png" alt="" width="64" height="64">
       <h2>The Daily 15 <span class="beta">Beta</span></h2>
       <p>A daily crossword-style word puzzle. Everyone gets the same starting word and the same 15 words. Fit them all on the board.</p>
-      <a class="btn" href="https://smaisle.github.io/DailyGrid/today.html">Play today's puzzle</a>
+      <a class="btn play" data-href="https://smaisle.github.io/DailyGrid/today.html" hidden>Play today's puzzle</a>
+      <form class="gunlock" autocomplete="off"><input type="text" placeholder="Game code" aria-label="Game code" autocapitalize="characters" spellcheck="false"><button class="btn" type="submit">Unlock</button></form>
+      <p class="meta gbad" hidden>That code isn't for this game.</p>
     </section>
-    <section class="game">
+    <section class="game" data-game="shuffleblast">
       <img class="gicon" src="icons/shuffle-blast.png" alt="" width="64" height="64">
       <h2>Shuffle Blast <span class="beta">Beta</span></h2>
       <p>A block puzzle with bombs, rubble and a shuffle. Drag pieces onto a 9×9 board and fill rows, columns or 3×3 squares to clear them. Still being tuned, so tell us what you think.</p>
-      <a class="btn" href="https://smaisle.github.io/ShuffleBlast/">Play in your browser</a>
+      <a class="btn play" data-href="https://smaisle.github.io/ShuffleBlast/" hidden>Play in your browser</a>
+      <form class="gunlock" autocomplete="off"><input type="text" placeholder="Game code" aria-label="Game code" autocapitalize="characters" spellcheck="false"><button class="btn" type="submit">Unlock</button></form>
+      <p class="meta gbad" hidden>That code isn't for this game.</p>
     </section>
-    <section class="game">
+    <section class="game" data-game="abcdeal">
       <img class="gicon" src="icons/abc-deal.png" alt="" width="64" height="64">
       <h2>A, B, C, Deal <span class="beta">Beta</span></h2>
       <p>A daily word game played like blackjack with letter cards. Five hands, the same for everyone each day. Spell a better word than the dealer.</p>
-      <a class="btn" href="https://smaisle.github.io/abcdeal/">Play today's deal</a>
+      <a class="btn play" data-href="https://smaisle.github.io/abcdeal/" hidden>Play today's deal</a>
+      <form class="gunlock" autocomplete="off"><input type="text" placeholder="Game code" aria-label="Game code" autocapitalize="characters" spellcheck="false"><button class="btn" type="submit">Unlock</button></form>
+      <p class="meta gbad" hidden>That code isn't for this game.</p>
     </section>
   </div>
   <section class="note" id="contact"><strong>Say hi.</strong> Questions, ideas or a bug to report? Email <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a> and we'll get back to you.</section>
 </div></main>
 <footer><div class="wrap">
-  © 2026 smAisle · v1.24 · Oct 30 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
+  © 2026 smAisle · v1.25 · Oct 30 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
 </div></footer>
 <script>
 (function(){
-  // The invite code reveals the invite-only games, remembered on this device.
-  var CODES=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked';
+  // Family&Friends reveals the invite-only section; each game then needs its own code.
+  // Game codes live in Firestore (invite_codes/{CODE} -> {game}) and are made on the stats page.
+  // This only hides links: anyone with a game's URL can still play it.
+  var FAMILY=['FAMILY&FRIENDS','FAMILYANDFRIENDS','FAMILY+FRIENDS'], KEY='d15_unlocked', GKEY='smaisle_games';
+  var DOC='https://firestore.googleapis.com/v1/projects/aislerun-88e79/databases/(default)/documents/invite_codes/';
+  var API='AIzaSyAlbSCTpAiK-1tojkyWrY3QuJsSzILHSfs';
   var form=document.getElementById('unlock'), bad=document.getElementById('bad'), priv=document.getElementById('private');
-  function open(){ form.hidden=true; bad.hidden=true; priv.hidden=false; }
-  try{ if(localStorage.getItem(KEY)==='1') open(); }catch(e){}
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function owned(){ try{ return JSON.parse(get(GKEY)||'[]'); }catch(e){ return []; } }
+  function clean(v){ return v.replace(/\s+/g,'').toUpperCase(); }
+  function open(){ form.hidden=true; bad.hidden=true; priv.hidden=false; set(KEY,'1'); }
+  function play(card){
+    var a=card.querySelector('.play'); a.href=a.getAttribute('data-href'); a.hidden=false;
+    card.querySelector('.gunlock').hidden=true; card.querySelector('.gbad').hidden=true;
+  }
+  function grant(game){
+    var list=owned(); if(list.indexOf(game)<0){ list.push(game); set(GKEY,JSON.stringify(list)); }
+    var card=priv.querySelector('[data-game="'+game+'"]'); if(card) play(card);
+  }
+  // Looks a code up in Firestore; resolves to its game key, or null.
+  function lookup(code){
+    if(!/^[A-Z0-9]{3,20}$/.test(code)) return Promise.resolve(null);
+    return fetch(DOC+code+'?key='+API).then(function(r){ return r.ok?r.json():null; })
+      .then(function(d){ return d&&d.fields&&d.fields.game?d.fields.game.stringValue:null; })
+      .catch(function(){ return null; });
+  }
+  if(get(KEY)==='1') open();
+  owned().forEach(grant);
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var v=clean(form.querySelector('input').value);
+    if(FAMILY.indexOf(v)>=0){ open(); return; }
+    // A game code typed here opens the section and that game together.
+    lookup(v).then(function(g){ if(g){ open(); grant(g); } else bad.hidden=false; });
+  });
+  priv.querySelectorAll('.gunlock').forEach(function(f){
+    var card=f.closest('[data-game]');
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      lookup(clean(f.querySelector('input').value)).then(function(g){
+        if(g===card.getAttribute('data-game')) grant(g); else card.querySelector('.gbad').hidden=false;
+      });
+    });
+  });
   // Respect "reduce motion": keep the gameplay previews still.
   if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)
     document.querySelectorAll('video.preview').forEach(function(v){ v.removeAttribute('autoplay'); v.pause(); });
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var v=form.querySelector('input').value.replace(/\s+/g,'').toUpperCase();
-    if(CODES.indexOf(v)>=0){ try{ localStorage.setItem(KEY,'1'); }catch(e){} open(); }
-    else bad.hidden=false;
-  });
 })();
 </script>
 </body>
