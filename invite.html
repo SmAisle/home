@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Invite only · smAisle</title>
+<meta name="description" content="smAisle games in testing.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="mark" href="./">sm<b>Ai</b>sle</a>
+  <nav><a href="./">Games</a><a href="about.html">The details</a></nav>
+</div></header>
+<main><div class="wrap">
+  <h1>Invite only <span class="beta">Beta</span></h1>
+  <p class="lead">New games we're still testing. Each one has its own code. Enter it to start playing.</p>
+  <div class="games">
+    <section class="game" data-game="daily15">
+      <img class="gicon" src="icons/daily-15.png" alt="" width="64" height="64">
+      <h2>The Daily 15 <span class="beta">Beta</span></h2>
+      <p>A daily crossword-style word puzzle. Everyone gets the same starting word and the same 15 words. Fit them all on the board.</p>
+      <a class="btn play" data-href="https://smaisle.github.io/DailyGrid/today.html" hidden>Play today's puzzle</a>
+      <form class="gunlock" autocomplete="off"><input type="text" placeholder="Game code" aria-label="Game code" autocapitalize="characters" spellcheck="false"><button class="btn" type="submit">Unlock</button></form>
+      <p class="meta gbad" hidden>That code isn't for this game.</p>
+    </section>
+    <section class="game" data-game="shuffleblast">
+      <img class="gicon" src="icons/shuffle-blast.png" alt="" width="64" height="64">
+      <h2>Shuffle Blast <span class="beta">Beta</span></h2>
+      <p>A block puzzle with bombs, rubble and a shuffle. Drag pieces onto a 9×9 board and fill rows, columns or 3×3 squares to clear them. Still being tuned, so tell us what you think.</p>
+      <a class="btn play" data-href="https://smaisle.github.io/ShuffleBlast/" hidden>Play in your browser</a>
+      <form class="gunlock" autocomplete="off"><input type="text" placeholder="Game code" aria-label="Game code" autocapitalize="characters" spellcheck="false"><button class="btn" type="submit">Unlock</button></form>
+      <p class="meta gbad" hidden>That code isn't for this game.</p>
+    </section>
+    <section class="game" data-game="abcdeal">
+      <img class="gicon" src="icons/abc-deal.png" alt="" width="64" height="64">
+      <h2>A, B, C, Deal <span class="beta">Beta</span></h2>
+      <p>A daily word game played like blackjack with letter cards. Five hands, the same for everyone each day. Spell a better word than the dealer.</p>
+      <a class="btn play" data-href="https://smaisle.github.io/abcdeal/" hidden>Play today's deal</a>
+      <form class="gunlock" autocomplete="off"><input type="text" placeholder="Game code" aria-label="Game code" autocapitalize="characters" spellcheck="false"><button class="btn" type="submit">Unlock</button></form>
+      <p class="meta gbad" hidden>That code isn't for this game.</p>
+    </section>
+  </div>
+</div></main>
+<footer><div class="wrap">
+  © 2026 smAisle · v1.27 · Oct 30 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
+</div></footer>
+<script src="invite.js"></script>
+<script>
+(function(){
+  // Needs Family&Friends (or any game code) first; otherwise back to the home page.
+  if(!Invite.family()&&!Invite.owned().length){ location.replace('./#unlock'); return; }
+  document.querySelectorAll('[data-game]').forEach(function(card){
+    var g=card.getAttribute('data-game');
+    var mine=Invite.owned().indexOf(g)>=0;
+    // Someone who only has game codes sees just their games.
+    if(!Invite.family()&&!mine){ card.hidden=true; return; }
+    if(mine) Invite.show(card);
+    card.querySelector('.gunlock').addEventListener('submit',function(e){
+      e.preventDefault();
+      Invite.check(card.querySelector('input').value).then(function(r){
+        if(r===g) Invite.go(r); else card.querySelector('.gbad').hidden=false;
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
