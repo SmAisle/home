@@ -31,18 +31,21 @@
   <h2 class="section">Games</h2>
   <div class="games">
     <section class="game">
+      <video class="preview" src="previews/straight-down.mp4" poster="previews/straight-down.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true" style="object-position:center 80%"></video>
       <img class="gicon" src="icons/straight-down.png" alt="" width="64" height="64">
       <h2>Straight Down</h2>
       <p>The falling poker puzzle. Cards drop one at a time; line them up in a row or column to make poker hands and clear the board. Solo, endless and pass-and-play modes.</p>
       <a class="btn" href="https://smaisle.github.io/StraightDown/">Play in your browser</a><span class="soon">iPhone app coming soon</span>
     </section>
     <section class="game">
+      <video class="preview" src="previews/connello.mp4" poster="previews/connello.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
       <img class="gicon" src="icons/connello.png" alt="" width="64" height="64">
       <h2>Connello</h2>
       <p>A drop-four game with Reversi-style flips. Trap your opponent's discs to turn them your color, and get four of your own in a row to win. Play a friend or the computer.</p>
       <a class="btn" href="https://smaisle.github.io/Connello/">Play in your browser</a><span class="soon">iPhone app coming soon</span>
     </section>
     <section class="game">
+      <video class="preview" src="previews/bullseye-roulette.mp4" poster="previews/bullseye-roulette.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
       <img class="gicon" src="icons/bullseye-roulette.png" alt="" width="64" height="64">
       <h2>Bullseye Roulette</h2>
       <p>Darts on a spinning roulette wheel. Bet red or black, roll the ball, then hit the number it lands on. Count down from 301 to exactly zero in as few darts as you can. Solo, vs Computer or 2 players.</p>
@@ -80,7 +83,7 @@
   <section class="note" id="contact"><strong>Say hi.</strong> Questions, ideas or a bug to report? Email <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a> and we'll get back to you.</section>
 </div></main>
 <footer><div class="wrap">
-  © 2026 smAisle · v1.12 · Oct 30 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
+  © 2026 smAisle · v1.13 · Oct 30 · <a href="support.html">Support</a> · <a href="privacy.html">Privacy policy</a> · <a href="mailto:smaisle.app@gmail.com">smaisle.app@gmail.com</a>
 </div></footer>
 <script>
 (function(){
@@ -89,6 +92,9 @@
   var form=document.getElementById('unlock'), bad=document.getElementById('bad'), priv=document.getElementById('private');
   function open(){ form.hidden=true; bad.hidden=true; priv.hidden=false; }
   try{ if(localStorage.getItem(KEY)==='1') open(); }catch(e){}
+  // Respect "reduce motion": keep the gameplay previews still.
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)
+    document.querySelectorAll('video.preview').forEach(function(v){ v.removeAttribute('autoplay'); v.pause(); });
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var v=form.querySelector('input').value.replace(/\s+/g,'').toUpperCase();
