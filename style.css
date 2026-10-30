@@ -65,3 +65,7 @@ details.faq h3{margin-top:10px}
 .lost .big{font-size:72px;font-weight:900;line-height:1;margin:0;background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
 .about{max-width:760px;font-size:18px;color:var(--muted)}
 .ai{font-weight:900;background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.subnav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px}
+.subnav a{margin:0;font-weight:800;font-size:14px;text-decoration:none;color:var(--muted);padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.subnav a[aria-current]{background:var(--navy);border-color:var(--navy);color:#fff}
+@media (prefers-color-scheme:dark){.subnav a[aria-current]{background:linear-gradient(90deg,var(--purple),var(--cyan));border-color:transparent;color:var(--navy)}}
