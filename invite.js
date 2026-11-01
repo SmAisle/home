@@ -43,7 +43,7 @@ var Invite=(function(){
     go:function(g){ own(g,last); location.href=url(g); },
     show:function(card){
       var a=card.querySelector('.play'); a.href=url(card.getAttribute('data-game')); a.hidden=false;
-      card.querySelector('.gunlock').hidden=true; card.querySelector('.gbad').hidden=true;
+      card.querySelector('.gunlock').hidden=true; card.querySelector('.gbad').hidden=true; var lb=card.querySelector('.lockbtn'); if(lb) lb.hidden=true;
     }
   };
 })();
