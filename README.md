@@ -1,4 +1,3 @@
-# smaisle.app
+# Moved
 
-The smAisle home page, privacy policy and support page, served by GitHub Pages at https://smaisle.app.
-The games themselves stay on smaisle.github.io.
+The smaisle.app website now lives in SmAisle/smaisle.github.io (moved Nov 1, 2026). Edit it there.
